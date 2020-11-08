@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2020_11_08_082033) do
     t.integer "price", default: 0, null: false, comment: "本の値段"
     t.string "amazon_url", default: "", null: false, comment: "参考のAmazonURL"
     t.string "amazon_image_url", default: "", null: false, comment: "参考のAmazonの画像URL"
+    t.boolean "is_open", default: true, null: false, comment: "本を公開するか否か"
     t.bigint "book_series_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

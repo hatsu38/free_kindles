@@ -9,6 +9,7 @@
 #  price(本の値段)                         :integer          default(0), not null
 #  amazon_url(参考のAmazonURL)             :string           default(""), not null
 #  amazon_image_url(参考のAmazonの画像URL) :string           default(""), not null
+#  is_open(本を公開するか否か)            :boolean           default(true), not null
 #  book_series_id                          :bigint
 #  created_at                              :datetime         not null
 #  updated_at                              :datetime         not null
