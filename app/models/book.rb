@@ -2,16 +2,16 @@
 #
 # Table name: books
 #
-#  id               :bigint           not null, primary key
-#  amazon_image_url :string           default(""), not null
-#  amazon_url       :string           default(""), not null
-#  book_number      :integer          default(1), not null
-#  description      :text             default(""), not null
-#  price            :integer          default(0), not null
-#  title            :string           not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  book_series_id   :bigint
+#  id                                      :bigint           not null, primary key
+#  title(本のタイトル)                     :string           not null
+#  book_number(何巻目の本か)               :integer          default(1), not null
+#  description(本の説明)                   :text             default(""), not null
+#  price(本の値段)                         :integer          default(0), not null
+#  amazon_url(参考のAmazonURL)             :string           default(""), not null
+#  amazon_image_url(参考のAmazonの画像URL) :string           default(""), not null
+#  book_series_id                          :bigint
+#  created_at                              :datetime         not null
+#  updated_at                              :datetime         not null
 #
 # Indexes
 #
@@ -22,4 +22,9 @@
 #  fk_rails_...  (book_series_id => book_series.id)
 #
 class Book < ApplicationRecord
+  validates :title, presence: true
+  validates :description, presence: true
+  validates :amazon_url, presence: true
+  validates :book_number, presence: true
+  validates :price, presence: true
 end

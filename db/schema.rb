@@ -15,22 +15,22 @@ ActiveRecord::Schema.define(version: 2020_11_08_082033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "book_series", force: :cascade do |t|
-    t.string "title", null: false
-    t.integer "comics_count", default: 1, null: false
-    t.text "description", default: "", null: false
-    t.string "amazon_url", default: "", null: false
+  create_table "book_series", comment: "本のシリーズ", force: :cascade do |t|
+    t.string "title", null: false, comment: "本のシリーズタイトル"
+    t.integer "books_count", default: 1, null: false, comment: "本の巻数"
+    t.text "description", default: "", null: false, comment: "本の説明"
+    t.string "amazon_url", default: "", null: false, comment: "参考のAmazonURL"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "books", force: :cascade do |t|
-    t.string "title", null: false
-    t.integer "book_number", default: 1, null: false
-    t.text "description", default: "", null: false
-    t.integer "price", default: 0, null: false
-    t.string "amazon_url", default: "", null: false
-    t.string "amazon_image_url", default: "", null: false
+  create_table "books", comment: "本", force: :cascade do |t|
+    t.string "title", null: false, comment: "本のタイトル"
+    t.integer "book_number", default: 1, null: false, comment: "何巻目の本か"
+    t.text "description", default: "", null: false, comment: "本の説明"
+    t.integer "price", default: 0, null: false, comment: "本の値段"
+    t.string "amazon_url", default: "", null: false, comment: "参考のAmazonURL"
+    t.string "amazon_image_url", default: "", null: false, comment: "参考のAmazonの画像URL"
     t.bigint "book_series_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
