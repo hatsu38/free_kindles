@@ -10,18 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_08_080511) do
+ActiveRecord::Schema.define(version: 2020_11_08_082033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "book_series", force: :cascade do |t|
     t.string "title", null: false
-    t.integer "comics_count", default: 0, null: false
+    t.integer "comics_count", default: 1, null: false
     t.text "description", default: "", null: false
     t.string "amazon_url", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "books", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "book_number", default: 1, null: false
+    t.text "description", default: "", null: false
+    t.integer "price", default: 0, null: false
+    t.string "amazon_url", default: "", null: false
+    t.string "amazon_image_url", default: "", null: false
+    t.bigint "book_series_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_series_id"], name: "index_books_on_book_series_id"
+  end
+
+  add_foreign_key "books", "book_series"
 end
