@@ -37,6 +37,14 @@ group :development, :test do
   gem "pry" #デバッグ用
   gem "pry-byebug" #デバッグ用
   gem "pry-rails" #デバッグ用
+  gem 'brakeman' # セキュリティ検証
+  gem 'bullet' # N+1を検出
+  gem 'annotate' # Add Column Info To model file
+  gem 'rubocop' # RubyのLint
+  gem 'rubocop-performance' # RubyのLint
+  gem 'rubocop-rails' # RubyのLint
+  gem 'rubocop-rspec' # RubyのLint
+  gem 'rubocop-thread_safety' # RubyのLint
 end
 
 group :development do
