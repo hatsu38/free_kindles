@@ -23,6 +23,9 @@
 #  fk_rails_...  (book_series_id => book_series.id)
 #
 class Book < ApplicationRecord
+
+  belongs_to :book_series
+
   validates :title, presence: true
   validates :description, presence: true
   validates :amazon_url, presence: true
