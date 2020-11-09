@@ -27,7 +27,6 @@ class Book < ApplicationRecord
   belongs_to :book_series
 
   validates :title, presence: true
-  validates :description, presence: true
   validates :amazon_url, presence: true
   validates :book_number, presence: true
   validates :price, presence: true
