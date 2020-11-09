@@ -11,9 +11,10 @@
 #  updated_at                  :datetime         not null
 #
 class BookSeries < ApplicationRecord
-  validates :title, uniqueness: { scope: :amazon_url }
+
+  has_many :books
+
+  validates :title, presence: true, uniqueness: { scope: :amazon_url }
   validates :amazon_url, presence: true
   validates :books_count, presence: true
-  validates :description, presence: true
-  validates :title, presence: true
 end
