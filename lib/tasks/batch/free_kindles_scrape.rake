@@ -14,10 +14,20 @@ namespace :batch do
 
     agent = Mechanize.new
     [*START_PAGE..MAX_PAGE].each do |page|
-      sleep 2
+      num = 0
       begin
+        next if num > 2
+
+        sleep 2
+        puts page
         hp = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
         next if hp.blank?
+      rescue Mechanize::ResponseCodeError => e
+        Raven.extra_context(page: e.message)
+        num += 1
+        retry
+      end
+      begin
         # Book Block
         blocks = hp.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
 
