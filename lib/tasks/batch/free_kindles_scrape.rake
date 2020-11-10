@@ -17,7 +17,7 @@ namespace :batch do
       sleep 1
       begin
         page = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
-        binding.pry
+        next if page.blank?
         # Book Block
         blocks = page.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
 
