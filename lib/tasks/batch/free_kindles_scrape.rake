@@ -14,29 +14,34 @@ namespace :batch do
 
     agent = Mechanize.new
     [*START_PAGE..MAX_PAGE].each do |page|
-      page = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
+      begin
+        page = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
 
-      # Book Block
-      blocks = page.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
+        # Book Block
+        blocks = page.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
 
-      blocks.each do |block|
-        element = block.at('h2.s-line-clamp-2 a')
+        blocks.each do |block|
+          element = block.at('h2.s-line-clamp-2 a')
 
-        title = element.text.strip
-        link = generate_amazon_url(element)
-        price = block.at('span.a-price span.a-price-whole').text.match(/\w.+/).to_s.to_i
-        image_url = block.at('img').get_attribute(:src)
-        book_series = block.at('div.a-color-secondary a')
-        book_number = generate_book_number(book_series)
+          title = element.text.strip
+          link = generate_amazon_url(element)
+          price = block.at('span.a-price span.a-price-whole').text.match(/\w.+/).to_s.to_i
+          image_url = block.at('img').get_attribute(:src)
+          book_series = block.at('div.a-color-secondary a')
+          book_number = generate_book_number(book_series)
 
-        book_series_amazon_url = generate_amazon_url(book_series)
-        book_series_title = generate_book_series_title(book_series)
-        book_series_amazon_url = generate_amazon_url(book_series)
-        series_books_count = generate_books_count(book_series)
+          book_series_amazon_url = generate_amazon_url(book_series)
+          book_series_title = generate_book_series_title(book_series)
+          book_series_amazon_url = generate_amazon_url(book_series)
+          series_books_count = generate_books_count(book_series)
 
-        book_series_object = BookSeries.new(title: book_series_title, description: "", books_count: series_books_count, amazon_url: book_series_amazon_url)
-        book_series_object.books.build(title: title, description: "", book_number: book_number, price: price, amazon_url: link, amazon_image_url: image_url)
-        insert_book_serieses << book_series_object
+          book_series_object = BookSeries.new(title: book_series_title, description: "", books_count: series_books_count, amazon_url: book_series_amazon_url)
+          book_series_object.books.build(title: title, description: "", book_number: book_number, price: price, amazon_url: link, amazon_image_url: image_url)
+          insert_book_serieses << book_series_object
+        rescue
+          Raven.extra_context(page: page)
+          next
+        end
       end
     end
     BookSeries.import insert_book_serieses, recursive: true, validate: true
