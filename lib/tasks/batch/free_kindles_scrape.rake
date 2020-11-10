@@ -14,12 +14,12 @@ namespace :batch do
 
     agent = Mechanize.new
     [*START_PAGE..MAX_PAGE].each do |page|
-      sleep 1
+      sleep 2
       begin
-        page = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
-        next if page.blank?
+        hp = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
+        next if hp.blank?
         # Book Block
-        blocks = page.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
+        blocks = hp.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
 
         blocks.each do |block|
           element = block.at('h2.s-line-clamp-2 a')
