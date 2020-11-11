@@ -14,11 +14,11 @@ namespace :batch do
 
     agent = Mechanize.new
     [*START_PAGE..MAX_PAGE].each do |page|
-      num = 0
+      num = 1
       begin
-        next if num > 2
+        next if num > 3
 
-        sleep 2
+        sleep num
         puts page
         hp = agent.get(AMAZON_BASE_URL + KINDLE_0YEN_BOOKS_URL + "&page=#{page}")
         next if hp.blank?
@@ -26,6 +26,9 @@ namespace :batch do
         Raven.extra_context(page: e.message)
         num += 1
         retry
+      rescue
+        Raven.extra_context(page: e.message)
+        next
       end
       begin
         # Book Block
