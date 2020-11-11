@@ -27,7 +27,7 @@ namespace :batch do
         num += 1
         retry
       rescue
-        BookSeries.import insert_book_serieses, recursive: true, validate: true
+        # BookSeries.import insert_book_serieses, recursive: true, validate: true
         Raven.extra_context(page: e.message)
         next
       end
@@ -36,6 +36,7 @@ namespace :batch do
         blocks = hp.search('div.sg-col-inner div.s-include-content-margin.s-border-bottom.s-latency-cf-section')
 
         blocks.each do |block|
+          puts "ok #{page}"
           element = block.at('h2.s-line-clamp-2 a')
 
           title = element.text.strip
@@ -49,17 +50,18 @@ namespace :batch do
           book_series_title = generate_book_series_title(book_series)
           book_series_amazon_url = generate_amazon_url(book_series)
           series_books_count = generate_books_count(book_series)
-
-          book_series_object = BookSeries.new(title: book_series_title, description: "", books_count: series_books_count, amazon_url: book_series_amazon_url)
-          book_series_object.books.build(title: title, description: "", book_number: book_number, price: price, amazon_url: link, amazon_image_url: image_url)
-          insert_book_serieses << book_series_object
+          book_series_object = BookSeries.find_or_create_by(title: book_series_title, description: "", books_count: series_books_count, amazon_url: book_series_amazon_url)
+          puts book_series_object.title
+          book_series_object.books.find_or_create_by(title: title, description: "", book_number: book_number, price: price, amazon_url: link, amazon_image_url: image_url)
+          puts "#{book_series_object.books.size}冊"
+          # insert_book_serieses << book_series_object
         rescue
           Raven.extra_context(page: page)
           next
         end
       end
     end
-    BookSeries.import insert_book_serieses, recursive: true, validate: true
+    # BookSeries.import insert_book_serieses, recursive: true, validate: true
   end
 end
 
