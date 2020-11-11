@@ -27,6 +27,7 @@ namespace :batch do
         num += 1
         retry
       rescue
+        BookSeries.import insert_book_serieses, recursive: true, validate: true
         Raven.extra_context(page: e.message)
         next
       end

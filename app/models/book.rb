@@ -26,7 +26,7 @@ class Book < ApplicationRecord
 
   belongs_to :book_series
 
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: { scope: :amazon_url }
   validates :amazon_url, presence: true
   validates :book_number, presence: true
   validates :price, presence: true
